@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+logfile
+node_modules/
+.next/
+frontend/.env.local
+.DS_Store
+pdf-documents/
+pgvector/
+
