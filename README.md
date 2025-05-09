@@ -11,8 +11,8 @@ A full-stack application for uploading and analyzing PDF documents using artific
 - Deployment on Railway and Vercel
 
 ## Demo
-- **Frontend:** [https://frontend.yourapp.com](#)
-- **Backend API:** [https://backend.yourapp.com/docs](#)
+- **Frontend:** [frontend-production-77dd.up.railway.app](#)
+- **Backend API:** [my-app-llm-production.up.railway.app](#)
 
 ## Local Installation
 ```bash
