@@ -16,16 +16,22 @@ from typing import Optional, List
 
 @router.post("/register", response_model=UserResponse)
 async def register_user(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.email == user.email).first()
+    # 🔹 Normalización
+    email_normalized = user.email.strip().lower()
+    name_normalized = user.full_name.strip()
+
+    # 🔹 Verificación con email normalizado
+    db_user = db.query(models.User).filter(models.User.email == email_normalized).first()
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
     hashed_password = utils.hash_password(user.password)
 
+    # 🔹 Guardado con campos normalizados
     new_user = models.User(
-        email=user.email,
+        email=email_normalized,
         hashed_password=hashed_password,
-        full_name=user.full_name
+        full_name=name_normalized
     )
 
     try:
@@ -62,12 +68,18 @@ async def login_user(user: UserLogin, db: Session = Depends(get_db)):
         "full_name": db_user.full_name
     }
 
+class Attachment(BaseModel):
+    name: str
+    url: str
+    type: Optional[str] = None
+
 class ChatMessageOut(BaseModel):
     id: int
     session_id: str
     sender: str
     content: str
     timestamp: datetime
+    attachments: Optional[List[Attachment]] = []
     
     class Config:
         orm_mode = True
@@ -162,11 +174,11 @@ def save_message(
             sender=msg.sender,
             content=msg.content,
             timestamp=datetime.utcnow(),
+            attachments=[att.dict() for att in msg.attachments] if msg.attachments else []
         )
 
         db.add(message)
 
-        
         user_messages_count = (
             db.query(models.ChatMessage)
             .filter(
@@ -179,10 +191,8 @@ def save_message(
         if user_messages_count == 0 and msg.sender == "user":
             new_name = None
             if msg.attachments and len(msg.attachments) > 0:
-                
                 new_name = f"Análisis {msg.attachments[0].name}"
             elif msg.content and msg.content.strip():
-                
                 new_name = msg.content.strip()
                 new_name = new_name[:30] + "..." if len(new_name) > 30 else new_name
 

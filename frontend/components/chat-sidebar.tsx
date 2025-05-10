@@ -50,9 +50,15 @@ export default function ChatSidebar({
     try {
       await deleteChatSession(sessionId)
       setSessions(sessions.filter((s) => s.id !== sessionId))
-      if (currentSession.id === sessionId && sessions.length > 1) {
-        const nextSession = sessions.find(s => s.id !== sessionId)
-        if (nextSession) onSessionSelect(nextSession.id)
+      if (currentSession.id === sessionId) {
+        const remaining = sessions.filter((s) => s.id !== sessionId)
+        if (remaining.length > 0) {
+          onSessionSelect(remaining[0].id)
+        } else {
+          
+          setSessions([])
+          onSessionSelect("new")
+        }
       }
     } catch (err) {
       console.error("Error deleting session:", err)
@@ -69,8 +75,8 @@ export default function ChatSidebar({
     >
       {/* User */}
       <div className="flex items-center justify-between px-4 pt-4 h-[74px]">
-        <div className="flex items-start">
-          <div className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold mr-3">
+        <div className="flex items-center gap-2 overflow-hidden">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center font-semibold flex-shrink-0">
             {initial}
           </div>
           <div className="flex flex-col justify-center leading-tight">

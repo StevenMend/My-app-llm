@@ -26,7 +26,7 @@ export default function AuthForm() {
   
     try {
       if (isLogin) {
-        const res = await loginUser({ email, password })
+        const res = await loginUser({ email: email.trim().toLowerCase(), password })
         console.log("Login successful:", res)
   
         localStorage.setItem("access_token", res.access_token)
@@ -43,9 +43,9 @@ export default function AuthForm() {
         window.location.href = "/chat"
       } else {
         const res = await registerUser({
-          email,
+          email: email.trim().toLowerCase(),
           password,
-          full_name: name,
+          full_name: name.trim()
         })
   
         console.log("Registration successful:", res)
@@ -149,7 +149,7 @@ export default function AuthForm() {
       <div className="mt-8 text-center text-xs text-gray-500">
         <p>
           By creating an account, you agree to our{" "}
-          <Link href="#" className="underline">
+          <Link href="/terms" className="underline">
             terms of use
           </Link>
           .

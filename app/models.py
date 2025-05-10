@@ -5,7 +5,7 @@ from app.database import Base
 from sqlalchemy import Text, DateTime
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
-
+from sqlalchemy.dialects.postgresql import JSON
 
 
 class User(Base):
@@ -38,6 +38,7 @@ class ChatMessage(Base):
     sender = Column(String) 
     content = Column(Text)
     timestamp = Column(DateTime, default=datetime.utcnow)
+    attachments = Column(JSON, nullable=True)
 
 
 class SessionDocument(Base):

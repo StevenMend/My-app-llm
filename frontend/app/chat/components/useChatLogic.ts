@@ -99,6 +99,12 @@ export default function useChatLogic() {
   }, [])
 
   useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+    }
+  }, [messages])
+
+  useEffect(() => {
     if (currentSession.id !== "new") {
       console.log("Auto-loadSession triggered for session:", currentSession.id)
       loadSession(currentSession.id)
@@ -430,6 +436,7 @@ export default function useChatLogic() {
         content: msg.content,
         sender: msg.sender === "user" || msg.sender === "ai" ? msg.sender : "ai",
         timestamp: new Date(msg.timestamp),
+        attachments: msg.attachments || [],
       }))
 
       console.log("Formatted messages:", formattedMessages)

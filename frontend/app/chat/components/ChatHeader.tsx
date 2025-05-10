@@ -18,7 +18,7 @@ export default function ChatHeader({
 }: ChatHeaderProps) {
   return (
     <div
-      className="z-30 w-full border-b border-gray-200 bg-white pt-[17.8px] pb-[15px]"
+      className="sticky top-0 z-30 w-full border-b border-gray-200 bg-white pt-[17.8px] pb-[15px]"
       style={{ borderBottomWidth: "0.1px" }}
     >
       <div className="flex items-center justify-between w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">

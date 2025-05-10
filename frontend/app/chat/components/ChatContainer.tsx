@@ -86,7 +86,7 @@ export default function ChatContainer({
 
         {/* Input */}
         <div className="w-full bg-white pt-2">
-          <div className="w-full max-w-4xl mx-auto px-6 py-4">
+          <div className="sticky bottom-0 w-full bg-white z-30 border-t">
             {Array.isArray(children) ? children[children.length - 1] : null}
           </div>
         </div>
